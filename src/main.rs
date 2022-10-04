@@ -1,3 +1,5 @@
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
 mod settings;
 
 use std::{
@@ -190,15 +192,22 @@ impl ViewerApp {
                 let height_ratio = max_size.y / image_size.y;
                 curr.zoom = width_ratio.min(height_ratio);
             };
-            let size = image_size * curr.zoom;
+            let mut size = image_size * curr.zoom;
             // Zoom
             let scroll = mouse_wheel().1 / 120.0;
+            let image_center = window_size / 2.0 + curr.offset;
+            let image_center_to_mouse = self.mouse_pos - image_center;
+            println!("{image_center_to_mouse:?}");
             if scroll != 0.0 {
                 if curr.dynamic_zoom {
                     curr.zoom = max_size.x / image_size.x;
                     curr.dynamic_zoom = false;
                 }
-                curr.zoom *= 1.1f32.powf(scroll);
+                let dzoom = 1.1f32.powf(scroll);
+                curr.zoom *= dzoom;
+                size = image_size * curr.zoom;
+                let delta = -image_center_to_mouse * scroll.signum() / dzoom;
+                curr.offset += delta;
             }
             let offset = (window_size - size) / 2.0 + curr.offset;
             // Draw image
