@@ -1,0 +1,29 @@
+[package]
+edition = '2021'
+name = 'neatpic'
+version = '0.1.0'
+
+[dependencies]
+bevy.default_features = false
+bevy.features = [
+  'animation',
+  'bevy_asset',
+  'bevy_audio',
+  'bevy_gilrs',
+  'bevy_scene',
+  'bevy_winit',
+  'bevy_core_pipeline',
+  'bevy_pbr',
+  'bevy_gltf',
+  'bevy_render',
+  'bevy_sprite',
+  'png',
+  'hdr',
+  'vorbis',
+  'x11',
+  'filesystem_watcher',
+]
+bevy.version = '0.8'
+bevy_egui = '0.16.1'
+egui = '0.19.0'
+image = '0.24.4'
